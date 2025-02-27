@@ -1,11 +1,11 @@
-import { AmazonHomePage } from "../../pages/AmazonHomePage"
+import { amazonHomePage } from "../../pages/amazonHomePage"
 import dataAmazon from "../../fixtures/data-amazon.json"
-import { AmazonResultPage } from "../../pages/AmazonResultPage"
-import {AmazonCartPage} from "../../pages/AmazonCartPage"
+import { amazonResultPage } from "../../pages/amazonResultPage"
+import { amazonCartPage } from "../../pages/amazonCartPage"
 
-const amazonHomePageObj = new AmazonHomePage()
-const resultPageObj = new AmazonResultPage()
-const cartPageObj = new AmazonCartPage()
+const amazonHomePageObj = new amazonHomePage()
+const resultPageObj = new amazonResultPage()
+const cartPageObj = new amazonCartPage()
 
 
 describe('testAutomation', () => {
@@ -15,21 +15,25 @@ describe('testAutomation', () => {
     cy.launchURL()
   })
 
-  it('searchForAnItem', () => {
+  it('productSearchWithText', () => {
     amazonHomePageObj.validatePageAndLookForToasters(dataAmazon.validationText)
-    amazonHomePageObj.searchForAnItem(dataAmazon.searchText)
+    amazonHomePageObj.editSearchText(dataAmazon.searchText)
+    amazonHomePageObj.clickOnSearch()
     resultPageObj.validateResultPagePostSearchedText().should("be.visible").contains(dataAmazon.searchText)
   })
 
-  it('selectItemFromDropDown', () => {
+  it('productSearchWithTextAndCategory', () => {
     amazonHomePageObj.validatePageAndLookForToasters(dataAmazon.validationText)
     amazonHomePageObj.selectFromDropDown(dataAmazon.selectFromDropDown)
-    resultPageObj.validateResultPagePostDropDownSelection().should("be.visible").should('have.text', dataAmazon.selectFromDropDown)
+    amazonHomePageObj.editSearchText(dataAmazon.searchText)
+    amazonHomePageObj.clickOnSearch()
+    resultPageObj.validateResultPagePostDropDownSelectionAndSearchText().should("be.visible").should('contain', dataAmazon.searchText)
   })
 
-  it('addItemToCart', () => {
+  it('addProductToShoppingCart', () => {
     amazonHomePageObj.validatePageAndLookForToasters(dataAmazon.validationText)
-    amazonHomePageObj.searchForAnItem(dataAmazon.searchText)
+    amazonHomePageObj.editSearchText(dataAmazon.searchText)
+    amazonHomePageObj.clickOnSearch()
     cartPageObj.addToCart();
     cartPageObj.validateCart().should('include.text', dataAmazon.itemInCartMessage)
   })

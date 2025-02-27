@@ -1,4 +1,4 @@
-export class AmazonCartPage {
+export class amazonCartPage {
 
     webLocators = {
       imageLocator: 'img[class="s-image"]',
@@ -7,7 +7,6 @@ export class AmazonCartPage {
       activeCart: '#sc-subtotal-label-activecart'
     }
     
-    // To ad an item to cart
     addToCart() {
       cy.get(this.webLocators.imageLocator).should('be.visible').first().click()
       cy.get(this.webLocators.addTocartButtonLocator).should('be.visible').click()
